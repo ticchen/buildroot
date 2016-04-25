@@ -1,0 +1,38 @@
+From 8c1be395e890b62bf3ca880eac7109ebc1cf7bbb Mon Sep 17 00:00:00 2001
+From: tic_chen <tic_chen@gemteks.com>
+Date: Mon, 25 Apr 2016 23:45:26 +0800
+Subject: mips: disable prefetch for MT7621
+
+---
+ libc/string/mips/memcpy.S | 2 ++
+ libc/string/mips/memset.S | 1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/libc/string/mips/memcpy.S b/libc/string/mips/memcpy.S
+index 3afdb2c..7b2b046 100644
+--- a/libc/string/mips/memcpy.S
++++ b/libc/string/mips/memcpy.S
+@@ -37,6 +37,8 @@
+ # include <sys/asm.h>
+ #endif
+ 
++#define DISABLE_PREFETCH
++
+ #if (_MIPS_ISA == _MIPS_ISA_MIPS4) || (_MIPS_ISA == _MIPS_ISA_MIPS5) || \
+     (_MIPS_ISA == _MIPS_ISA_MIPS32) || (_MIPS_ISA == _MIPS_ISA_MIPS64)
+ # ifndef DISABLE_PREFETCH
+diff --git a/libc/string/mips/memset.S b/libc/string/mips/memset.S
+index ef8ab0b..08d3ac3 100644
+--- a/libc/string/mips/memset.S
++++ b/libc/string/mips/memset.S
+@@ -35,6 +35,7 @@
+ 
+ /* Check to see if the MIPS architecture we are compiling for supports
+    prefetching.  */
++#define DISABLE_PREFETCH
+ 
+ #if (__mips == 4) || (__mips == 5) || (__mips == 32) || (__mips == 64)
+ # ifndef DISABLE_PREFETCH
+-- 
+2.8.1
+
